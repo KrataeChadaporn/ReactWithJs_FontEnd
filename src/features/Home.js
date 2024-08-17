@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-
-import data from '../app/data';
+import { useEffect } from 'react';
+import axios from 'axios';
 import Product from './Product/index';
 import AddForm from './Product/AddForm';
 
@@ -9,14 +9,25 @@ import AddForm from './Product/AddForm';
 let currentProductId = 9; 
 export default function Home() {
   const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    async function getProducts() {
+      const products = await axios.get(
+        'https://apimocha.com/krataechadaporn/products'
+      );
+      setProducts(products.data);
+    }
   
- 
+    getProducts();
+  }, []);
+
 
   function addProduct(product) {
     const newProduct = { id: ++currentProductId, ...product };
     setProducts([...products, newProduct]);
   }
-console.log("addProduct, ", addProduct);
+
+
 
   return (
     <>
